@@ -12,7 +12,8 @@ sudo apt-get install docker.io
 sudo systemctl start docker
 ```
 
-### Create a Dockerfile to define the Jenkins container. You can create a new file named Dockerfile in your working directory using the following command:
+### Create a Dockerfile to define the Jenkins container.
+#### create a new file named Dockerfile in your working directory using the following command:
 ```
 nano Dockerfile
 ```
