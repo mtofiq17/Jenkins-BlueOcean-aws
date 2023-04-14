@@ -7,17 +7,17 @@ sudo apt-get update
 sudo apt-get install docker.io
 ```
 
-# Start the Docker service using the following command:
+## Start the Docker service using the following command:
 ```
 sudo systemctl start docker
 ```
 
-# Create a Dockerfile to define the Jenkins container. You can create a new file named Dockerfile in your working directory using the following command:
+## Create a Dockerfile to define the Jenkins container. You can create a new file named Dockerfile in your working directory using the following command:
 ```
 nano Dockerfile
 ```
 
-# Add the following content to the Dockerfile:
+## Add the following content to the Dockerfile:
 
 ```
 FROM jenkins/jenkins:2.387.2
@@ -34,13 +34,13 @@ USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
 ```
 
-# Build the Docker image using the following command:
+## Build the Docker image using the following command:
 
 ```
 sudo docker build -t myjenkins .
 ```
 
-# Run the Docker container using the following command:
+### Run the Docker container using the following command:
 
 ```
 sudo docker run -d --name jenkins -p 8080:8080 -v jenkins_home:/var/jenkins_home myjenkins
