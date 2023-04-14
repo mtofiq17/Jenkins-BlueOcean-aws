@@ -1,24 +1,47 @@
 # Jenkins-BlueOcean-aws
-
 # Installation
-## Build the Jenkins BlueOcean Docker Image
+
+## Install Docker on the Ubuntu instance using the following command:
 ```
-docker build -t myjenkins-blueocean:2.332.3-1 .
+sudo apt-get update
+sudo apt-get install docker.io
 ```
 
-## Create the network 'jenkins'
+# Start the Docker service using the following command:
 ```
-docker network create jenkins
+sudo systemctl start docker
 ```
 
-## Run the Container
-### MacOS / Linux
+# Create a Dockerfile to define the Jenkins container. You can create a new file named Dockerfile in your working directory using the following command:
 ```
-docker run --name jenkins-blueocean --restart=on-failure --detach \
-  --network jenkins --env DOCKER_HOST=tcp://docker:2376 \
-  --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 \
-  --publish 8080:8080 --publish 50000:50000 \
-  --volume jenkins-data:/var/jenkins_home \
-  --volume jenkins-docker-certs:/certs/client:ro \
-  myjenkins-blueocean:2.332.3-1
+nano Dockerfile
+```
+
+# Add the following content to the Dockerfile:
+
+```
+FROM jenkins/jenkins:2.387.2
+USER root
+RUN apt-get update && apt-get install -y lsb-release
+RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
+  https://download.docker.com/linux/debian/gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) \
+  signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
+  https://download.docker.com/linux/debian \
+  $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+RUN apt-get update && apt-get install -y docker-ce-cli
+USER jenkins
+RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
+```
+
+# Build the Docker image using the following command:
+
+```
+sudo docker build -t myjenkins .
+```
+
+# Run the Docker container using the following command:
+
+```
+sudo docker run -d --name jenkins -p 8080:8080 -v jenkins_home:/var/jenkins_home myjenkins
 ```
