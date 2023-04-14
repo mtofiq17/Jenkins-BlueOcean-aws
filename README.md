@@ -1,5 +1,5 @@
-# Jenkins-BlueOcean-aws
-## Installation
+# Jenkins BlueOcean Setup in AWS
+
 
 ### Install Docker on the Ubuntu instance using the following command:
 ```
